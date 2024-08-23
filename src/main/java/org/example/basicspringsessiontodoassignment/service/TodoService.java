@@ -46,7 +46,6 @@ public class TodoService {
         List<Todo> todoList = todoRepository.findAllByCreatedAtBetweenOrderByModifiedAtDesc(startDateTime, endDateTime);
 
         List<TodoSimpleResponseDto> dtoList = new ArrayList<>();
-
         for (Todo todo : todoList) {
             TodoSimpleResponseDto dto = new TodoSimpleResponseDto(
                     todo.getId(),
@@ -76,12 +75,31 @@ public class TodoService {
     public TodoUpdateResponseDto updateTodo(Long todoId, TodoUpdateRequestDto requestDto) {
         Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new NullPointerException("존재하지 않는 일정입니다."));
 
-        todo.update(requestDto.getTodo(), requestDto.getManagerName());
+        todo.update(
+                requestDto.getTodo(),
+                requestDto.getManagerName()
+        );
 
-        return new TodoUpdateResponseDto(todo.getId(), todo.getTodo(), todo.getManagerName());
-
-
+        return new TodoUpdateResponseDto(
+                todo.getId(),
+                todo.getTodo(),
+                todo.getManagerName()
+        );
     }
 
+    @Transactional
+    public void deleteTodo(Long todoId, TodoDeleteRequestDto requestDto){
+        String password = requestDto.getPasswrod();
+        if (password == null) {
+            throw new NullPointerException("비밀번호를 입력하세요");
+        }
 
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()-> new NullPointerException("존재하지 않는 일정입니다"));
+
+        if (!password.equals(todo.getPassword())) {
+            throw new NullPointerException("잘못된 비밀번호 입니다.");
+        }
+
+        todoRepository.deleteById(todoId);
+    }
 }

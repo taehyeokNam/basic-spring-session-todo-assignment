@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class TodoDetailResponseDto {
+
     private final Long id;
     private final String todo;
     private final String managerName;
