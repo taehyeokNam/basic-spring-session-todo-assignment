@@ -1,10 +1,7 @@
 package org.example.basicspringsessiontodoassignment.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.basicspringsessiontodoassignment.dto.TodoDetailResponseDto;
-import org.example.basicspringsessiontodoassignment.dto.TodoSimpleResponseDto;
-import org.example.basicspringsessiontodoassignment.dto.TodoSaveRequestDto;
-import org.example.basicspringsessiontodoassignment.dto.TodoSaveResponseDto;
+import org.example.basicspringsessiontodoassignment.dto.*;
 import org.example.basicspringsessiontodoassignment.entity.Todo;
 import org.example.basicspringsessiontodoassignment.repository.TodoRepository;
 import org.springframework.stereotype.Service;
@@ -63,7 +60,6 @@ public class TodoService {
         return dtoList;
     }
 
-    @Transactional
     public TodoDetailResponseDto getTodo(Long todoId) {
         Todo todo = todoRepository.findById(todoId).orElseThrow(()-> new NullPointerException("존재하지 않는 일정입니다."));
 
@@ -75,4 +71,17 @@ public class TodoService {
                 todo.getModifiedAt()
         );
     }
+
+    @Transactional
+    public TodoUpdateResponseDto updateTodo(Long todoId, TodoUpdateRequestDto requestDto) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new NullPointerException("존재하지 않는 일정입니다."));
+
+        todo.update(requestDto.getTodo(), requestDto.getManagerName());
+
+        return new TodoUpdateResponseDto(todo.getId(), todo.getTodo(), todo.getManagerName());
+
+
+    }
+
+
 }

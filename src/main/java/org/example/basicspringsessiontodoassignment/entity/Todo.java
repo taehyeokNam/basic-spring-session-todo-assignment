@@ -26,4 +26,8 @@ public class Todo extends Timestamped {
     }
 
 
+    public void update(String todo, String managerName) {
+        this.todo = todo;
+        this.managerName = managerName;
+    }
 }
