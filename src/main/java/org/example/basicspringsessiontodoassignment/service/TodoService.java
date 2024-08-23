@@ -1,6 +1,7 @@
 package org.example.basicspringsessiontodoassignment.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.basicspringsessiontodoassignment.dto.TodoDetailResponseDto;
 import org.example.basicspringsessiontodoassignment.dto.TodoSimpleResponseDto;
 import org.example.basicspringsessiontodoassignment.dto.TodoSaveRequestDto;
 import org.example.basicspringsessiontodoassignment.dto.TodoSaveResponseDto;
@@ -37,7 +38,8 @@ public class TodoService {
                 savedTodo.getTodo(),
                 savedTodo.getManagerName(),
                 savedTodo.getCreatedAt(),
-                savedTodo.getModifiedAt());
+                savedTodo.getModifiedAt()
+        );
     }
 
     public List<TodoSimpleResponseDto> getTodos(String date) {
@@ -54,10 +56,23 @@ public class TodoService {
                     todo.getTodo(),
                     todo.getManagerName(),
                     todo.getCreatedAt(),
-                    todo.getModifiedAt());
+                    todo.getModifiedAt()
+            );
             dtoList.add(dto);
         }
         return dtoList;
     }
 
+    @Transactional
+    public TodoDetailResponseDto getTodo(Long todoId) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()-> new NullPointerException("존재하지 않는 일정입니다."));
+
+        return new TodoDetailResponseDto(
+                todo.getId(),
+                todo.getTodo(),
+                todo.getManagerName(),
+                todo.getCreatedAt(),
+                todo.getModifiedAt()
+        );
+    }
 }

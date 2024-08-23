@@ -1,6 +1,7 @@
 package org.example.basicspringsessiontodoassignment.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.basicspringsessiontodoassignment.dto.TodoDetailResponseDto;
 import org.example.basicspringsessiontodoassignment.dto.TodoSaveRequestDto;
 import org.example.basicspringsessiontodoassignment.dto.TodoSaveResponseDto;
 import org.example.basicspringsessiontodoassignment.dto.TodoSimpleResponseDto;
@@ -23,5 +24,10 @@ public class TodoController {
     @GetMapping("/todos")
     public List<TodoSimpleResponseDto> getTodos(@RequestParam String date) {
         return todoService.getTodos(date);
+    }
+
+    @GetMapping("/todos/{todoId}")
+    public TodoDetailResponseDto getTodo(@PathVariable Long todoId) {
+        return todoService.getTodo(todoId);
     }
 }
